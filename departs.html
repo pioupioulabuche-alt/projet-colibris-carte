@@ -112,7 +112,7 @@ function creerIcone(couleur) {
   });
 }
 
-fetch('./projet-colibris-departs%20(3).geojson')
+fetch('./projet-colibris-departs.geojson')
 .then(r => r.json())
 .then(data => {
   L.geoJSON(data, {
