@@ -24,13 +24,13 @@ body { margin:0; font-family:Arial,sans-serif; }
 
 <div class="titre">
 <strong>Départs des colibris</strong><br><br>
-📍 Avant le 15 août<br>
-📍 15 au 21 août<br>
-📍 22 au 28 août<br>
-📍 29 août au 4 septembre<br>
-📍 5 au 11 septembre<br>
-📍 Après le 11 septembre<br>
-📍 Date non reconnue<br><br>
+🔴 Avant le 15 août<br>
+🟠 15 au 21 août<br>
+🟡 22 au 28 août<br>
+🟢 29 août au 4 septembre<br>
+🔵 5 au 11 septembre<br>
+🟣 Après le 11 septembre<br>
+⚪ Date non reconnue<br><br>
 <a href="index.html">Retour</a>
 </div>
 
@@ -50,22 +50,16 @@ L.control.zoom({
 L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
-attribution:'© OpenStreetMap'
+  attribution:'© OpenStreetMap'
 }).addTo(map);
 
 function lireDate(dateTexte) {
   if (!dateTexte) return null;
 
-  const d1 = new Date(dateTexte);
-  if (!isNaN(d1)) return d1;
+  const d = new Date(dateTexte);
 
-  const parties = String(dateTexte).split("/");
-  if (parties.length === 3) {
-    const jour = Number(parties[0]);
-    const mois = Number(parties[1]) - 1;
-    const annee = Number(parties[2]);
-    const d2 = new Date(annee, mois, jour);
-    if (!isNaN(d2)) return d2;
+  if (!isNaN(d.getTime())) {
+    return d;
   }
 
   return null;
@@ -73,6 +67,7 @@ function lireDate(dateTexte) {
 
 function formatDate(dateTexte) {
   const d = lireDate(dateTexte);
+
   if (!d) return "Non précisée";
 
   return d.toLocaleDateString('fr-CA', {
@@ -84,6 +79,7 @@ function formatDate(dateTexte) {
 
 function couleurParDate(dateTexte) {
   const d = lireDate(dateTexte);
+
   if (!d) return "grey";
 
   const mois = d.getMonth() + 1;
@@ -94,6 +90,7 @@ function couleurParDate(dateTexte) {
   if (mois === 8 && jour <= 28) return "yellow";
   if ((mois === 8 && jour >= 29) || (mois === 9 && jour <= 4)) return "green";
   if (mois === 9 && jour <= 11) return "blue";
+
   return "violet";
 }
 
@@ -103,8 +100,10 @@ function creerIcone(couleur) {
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-" +
       couleur +
       ".png",
+
     shadowUrl:
       "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+
     iconSize: [18, 30],
     iconAnchor: [9, 30],
     popupAnchor: [1, -28],
@@ -118,6 +117,7 @@ fetch('./projet-colibris-departs.geojson')
   L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
       const couleur = couleurParDate(feature.properties.date);
+
       return L.marker(latlng, {
         icon: creerIcone(couleur)
       });
@@ -136,5 +136,6 @@ fetch('./projet-colibris-departs.geojson')
   }).addTo(map);
 });
 </script>
+
 </body>
 </html>
