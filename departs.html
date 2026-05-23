@@ -3,10 +3,20 @@
 <head>
 <meta charset="utf-8">
 <title>Départs des colibris</title>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 <style>
-body { margin:0; font-family:Arial,sans-serif; }
-#map { height:100vh; width:100%; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+}
+
+#map {
+  height:100vh;
+  width:100%;
+}
+
 .titre {
   position:absolute;
   z-index:1000;
@@ -20,6 +30,7 @@ body { margin:0; font-family:Arial,sans-serif; }
 }
 </style>
 </head>
+
 <body>
 
 <div class="titre">
@@ -69,6 +80,19 @@ function couleurParDate(dateTexte) {
   return "purple";
 }
 
+function creerIcone(couleur) {
+  return L.divIcon({
+    html: `<svg width="18" height="26" viewBox="0 0 24 36">
+      <path d="M12 0C5 0 0 5 0 12c0 9 12 24 12 24s12-15 12-24C24 5 19 0 12 0z"
+      fill="${couleur}" stroke="black" stroke-width="1"/>
+      <circle cx="12" cy="12" r="4" fill="white"/>
+    </svg>`,
+    className: '',
+    iconSize: [18,26],
+    iconAnchor: [9,26]
+  });
+}
+
 fetch('./projet-colibris-departs%20(3).geojson')
 .then(r => r.json())
 .then(data => {
@@ -76,12 +100,8 @@ fetch('./projet-colibris-departs%20(3).geojson')
     pointToLayer: function(feature, latlng) {
       const couleur = couleurParDate(feature.properties.date);
 
-      return L.circleMarker(latlng, {
-        radius:7,
-        color:couleur,
-        fillColor:couleur,
-        fillOpacity:0.85,
-        weight:2
+      return L.marker(latlng, {
+        icon: creerIcone(couleur)
       });
     },
 
