@@ -3,121 +3,43 @@
 <head>
 <meta charset="utf-8">
 <title>Projet Colibris</title>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
 <style>
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
+  background: #f8f8f8;
+  text-align: center;
+  padding-top: 80px;
 }
 
-#map {
-  height: 100vh;
-  width: 100%;
+h1 {
+  color: #b22222;
 }
 
-.titre {
-  position: absolute;
-  z-index: 1000;
+.bouton {
+  display: inline-block;
+  margin: 20px;
+  padding: 20px 35px;
   background: white;
-  padding: 12px;
-  margin: 10px;
-  border-radius: 10px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  max-width: 320px;
+}
+
+.bouton:hover {
+  transform: scale(1.05);
 }
 </style>
 </head>
-
 <body>
 
-<div class="titre">
-  <strong>Projet Colibris au Québec</strong><br>
-  Arrivées = cercle plein<br>
-  Départs = cercle pointillé<br>
-  🔴 Mâle | 🟣 Femelle | ⚪ Inconnu
-</div>
+<h1>Projet Colibris au Québec</h1>
+<p>Choisissez une carte :</p>
 
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-<script>
-
-const map = L.map('map').setView([48.5, -68.5], 6);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '© OpenStreetMap'
-  }
-).addTo(map);
-
-function couleur(sexe) {
-  if (sexe === "Mâle") return "red";
-  if (sexe === "Femelle") return "purple";
-  return "gray";
-}
-
-fetch('./projet-colibris-arrivees%20(2).geojson')
-.then(response => response.json())
-.then(data => {
-  L.geoJSON(data, {
-    pointToLayer: function(feature, latlng) {
-      return L.circleMarker(latlng, {
-        radius: 7,
-        color: couleur(feature.properties.sexe),
-        fillColor: couleur(feature.properties.sexe),
-        fillOpacity: 0.8,
-        weight: 2
-      });
-    },
-
-    onEachFeature: function(feature, layer) {
-      const p = feature.properties;
-
-      layer.bindPopup(
-        "<b>" + (p.ville || "Lieu inconnu") + "</b><br>" +
-        "Sexe : " + (p.sexe || "Inconnu") + "<br>" +
-        "Date : " + (p.date || "Non précisée") + "<br>" +
-        (p.commentaire || "")
-      );
-    }
-  }).addTo(map);
-})
-.catch(error => console.error(error));
-
-fetch('./projet-colibris-departs%20(3).geojson')
-.then(response => response.json())
-.then(data => {
-  L.geoJSON(data, {
-    pointToLayer: function(feature, latlng) {
-      return L.circleMarker(latlng, {
-        radius: 7,
-        color: couleur(feature.properties.sexe),
-        fillColor: couleur(feature.properties.sexe),
-        fillOpacity: 0.3,
-        weight: 2,
-        dashArray: "4"
-      });
-    },
-
-    onEachFeature: function(feature, layer) {
-      const p = feature.properties;
-
-      layer.bindPopup(
-        "<b>" + (p.ville || "Lieu inconnu") + "</b><br>" +
-        "Sexe : " + (p.sexe || "Inconnu") + "<br>" +
-        "Date : " + (p.date || "Non précisée") + "<br>" +
-        (p.commentaire || "")
-      );
-    }
-  }).addTo(map);
-})
-.catch(error => console.error(error));
-
-</script>
+<a class="bouton" href="arrivees.html">🌿 Carte des arrivées</a>
+<a class="bouton" href="departs.html">🍂 Carte des départs</a>
 
 </body>
 </html>
+    
