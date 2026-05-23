@@ -24,13 +24,13 @@ body { margin:0; font-family:Arial,sans-serif; }
 
 <div class="titre">
 <strong>Arrivées des colibris</strong><br><br>
-📍 Avant le 10 mai<br>
-📍 10 au 16 mai<br>
-📍 17 au 23 mai<br>
-📍 24 au 30 mai<br>
-📍 31 mai au 6 juin<br>
-📍 Après le 6 juin<br>
-📍 Date non reconnue<br><br>
+🔴 Avant le 10 mai<br>
+🟠 10 au 16 mai<br>
+🟡 17 au 23 mai<br>
+🟢 24 au 30 mai<br>
+🔵 31 mai au 6 juin<br>
+🟣 Après le 6 juin<br>
+⚪ Date non reconnue<br><br>
 <a href="index.html">Retour</a>
 </div>
 
@@ -50,22 +50,58 @@ L.control.zoom({
 L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
-attribution:'© OpenStreetMap'
+  attribution:'© OpenStreetMap'
 }).addTo(map);
 
 function lireDate(dateTexte) {
   if (!dateTexte) return null;
 
-  const d1 = new Date(dateTexte);
-  if (!isNaN(d1)) return d1;
+  if (typeof dateTexte === "number") {
+    return new Date(Math.round((dateTexte - 25569) * 86400 * 1000));
+  }
 
-  const parties = String(dateTexte).split("/");
-  if (parties.length === 3) {
-    const jour = Number(parties[0]);
-    const mois = Number(parties[1]) - 1;
-    const annee = Number(parties[2]);
-    const d2 = new Date(annee, mois, jour);
-    if (!isNaN(d2)) return d2;
+  const texte = String(dateTexte).trim();
+
+  const iso = new Date(texte);
+  if (!isNaN(iso)) return iso;
+
+  const match = texte.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (match) {
+    return new Date(
+      Number(match[3]),
+      Number(match[2]) - 1,
+      Number(match[1])
+    );
+  }
+
+  const mois = {
+    janvier:0,
+    février:1,
+    fevrier:1,
+    mars:2,
+    avril:3,
+    mai:4,
+    juin:5,
+    juillet:6,
+    août:7,
+    aout:7,
+    septembre:8,
+    octobre:9,
+    novembre:10,
+    décembre:11,
+    decembre:11
+  };
+
+  const matchTexte = texte.toLowerCase().match(
+    /^(\d{1,2})\s+([a-zéûôîàèç]+)\s+(\d{4})$/
+  );
+
+  if (matchTexte && mois[matchTexte[2]] !== undefined) {
+    return new Date(
+      Number(matchTexte[3]),
+      mois[matchTexte[2]],
+      Number(matchTexte[1])
+    );
   }
 
   return null;
@@ -73,6 +109,7 @@ function lireDate(dateTexte) {
 
 function formatDate(dateTexte) {
   const d = lireDate(dateTexte);
+
   if (!d) return "Non précisée";
 
   return d.toLocaleDateString('fr-CA', {
@@ -84,6 +121,7 @@ function formatDate(dateTexte) {
 
 function couleurParDate(dateTexte) {
   const d = lireDate(dateTexte);
+
   if (!d) return "grey";
 
   const mois = d.getMonth() + 1;
@@ -94,6 +132,7 @@ function couleurParDate(dateTexte) {
   if (mois === 5 && jour <= 23) return "yellow";
   if (mois === 5 && jour <= 30) return "green";
   if ((mois === 5 && jour === 31) || (mois === 6 && jour <= 6)) return "blue";
+
   return "violet";
 }
 
@@ -103,8 +142,10 @@ function creerIcone(couleur) {
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-" +
       couleur +
       ".png",
+
     shadowUrl:
       "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+
     iconSize: [18, 30],
     iconAnchor: [9, 30],
     popupAnchor: [1, -28],
@@ -118,6 +159,7 @@ fetch('./projet-colibris-arrivees.geojson')
   L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
       const couleur = couleurParDate(feature.properties.date);
+
       return L.marker(latlng, {
         icon: creerIcone(couleur)
       });
@@ -136,5 +178,6 @@ fetch('./projet-colibris-arrivees.geojson')
   }).addTo(map);
 });
 </script>
+
 </body>
 </html>
