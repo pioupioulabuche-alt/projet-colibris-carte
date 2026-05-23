@@ -8,8 +8,12 @@
 body { margin:0; font-family:Arial,sans-serif; }
 #map { height:100vh; width:100%; }
 .titre {
-  position:absolute; z-index:1000; background:white;
-  padding:12px; margin:10px; border-radius:10px;
+  position:absolute;
+  z-index:1000;
+  background:white;
+  padding:12px;
+  margin:10px;
+  border-radius:10px;
   box-shadow:0 2px 10px rgba(0,0,0,0.2);
   max-width:320px;
   font-size:14px;
@@ -32,11 +36,22 @@ body { margin:0; font-family:Arial,sans-serif; }
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-const map = L.map('map').setView([48.5, -68.5], 6);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{ attribution:'© OpenStreetMap' }).addTo(map);
+<script>
+
+const map = L.map('map', {
+  zoomControl: false
+}).setView([48.5, -68.5], 6);
+
+L.control.zoom({
+  position: 'topright'
+}).addTo(map);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+attribution:'© OpenStreetMap'
+}).addTo(map);
 
 function couleurParDate(dateTexte) {
   const d = new Date(dateTexte);
@@ -50,6 +65,7 @@ function couleurParDate(dateTexte) {
   if (mois === 5 && jour <= 23) return "yellow";
   if (mois === 5 && jour <= 30) return "green";
   if ((mois === 5 && jour === 31) || (mois === 6 && jour <= 6)) return "blue";
+
   return "purple";
 }
 
@@ -68,8 +84,10 @@ fetch('./projet-colibris-arrivees%20(2).geojson')
         weight:2
       });
     },
+
     onEachFeature: function(feature, layer) {
       const p = feature.properties;
+
       layer.bindPopup(
         "<b>" + (p.nom || "Observation") + "</b><br>" +
         "Sexe du colibri : " + (p.sexe || "Inconnu") + "<br>" +
@@ -79,6 +97,7 @@ fetch('./projet-colibris-arrivees%20(2).geojson')
     }
   }).addTo(map);
 });
+
 </script>
 </body>
 </html>
