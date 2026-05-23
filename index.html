@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Projet Colibris</title>
+
+<link rel="stylesheet"
+ href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+}
+
+#map {
+  height:100vh;
+}
+
+.titre {
+  position:absolute;
+  z-index:1000;
+  background:white;
+  padding:10px;
+  margin:10px;
+  border-radius:10px;
+  box-shadow:0 2px 8px #999;
+}
+</style>
+</head>
+
+<body>
+
+<div class="titre">
+<b>Projet Colibris au Québec</b><br>
+Carte des arrivées et départs
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+const map = L.map('map').setView([48.5,-68.5],6);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+attribution:'© OpenStreetMap'
+}).addTo(map);
+
+const arriveesUrl = 'REMPLACE_ARRIVEES';
+const departsUrl = 'REMPLACE_DEPARTS';
+
+function couleur(sexe){
+  if(sexe === "Mâle") return "red";
+  if(sexe === "Femelle") return "purple";
+  return "gray";
+}
+
+fetch(arriveesUrl)
+.then(r=>r.json())
+.then(data=>{
+
+L.geoJSON(data,{
+pointToLayer:function(feature,latlng){
+return L.circleMarker(latlng,{
+radius:7,
+color:couleur(feature.properties.sexe),
+fillOpacity:0.8
+});
+},
+onEachFeature:function(feature,layer){
+layer.bindPopup(
+"<b>"+feature.properties.ville+"</b><br>"+
+feature.properties.sexe+"<br>"+
+feature.properties.date+"<br>"+
+(feature.properties.commentaire||"")
+);
+}
+}).addTo(map);
+
+});
+
+fetch(departsUrl)
+.then(r=>r.json())
+.then(data=>{
+
+L.geoJSON(data,{
+pointToLayer:function(feature,latlng){
+return L.circleMarker(latlng,{
+radius:7,
+dashArray:"4",
+color:couleur(feature.properties.sexe),
+fillOpacity:0.5
+});
+},
+onEachFeature:function(feature,layer){
+layer.bindPopup(
+"<b>"+feature.properties.ville+"</b><br>"+
+feature.properties.sexe+"<br>"+
+feature.properties.date+"<br>"+
+(feature.properties.commentaire||"")
+);
+}
+}).addTo(map);
+
+});
+
+</script>
+
+</body>
+</html>
