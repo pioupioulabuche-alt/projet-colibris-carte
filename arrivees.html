@@ -35,15 +35,23 @@ body { margin:0; font-family:Arial,sans-serif; }
 </div>
 
 <div id="map"></div>
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-const map = L.map('map', { zoomControl: false }).setView([48.5, -68.5], 6);
+const map = L.map('map', {
+  zoomControl: false
+}).setView([48.5, -68.5], 6);
 
-L.control.zoom({ position: 'topright' }).addTo(map);
+L.control.zoom({
+  position: 'topright'
+}).addTo(map);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{ attribution:'© OpenStreetMap' }).addTo(map);
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+attribution:'© OpenStreetMap'
+}).addTo(map);
 
 function lireDate(dateTexte) {
   if (!dateTexte) return null;
@@ -110,10 +118,14 @@ fetch('./projet-colibris-arrivees%20(2).geojson')
   L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
       const couleur = couleurParDate(feature.properties.date);
-      return L.marker(latlng, { icon: creerIcone(couleur) });
+      return L.marker(latlng, {
+        icon: creerIcone(couleur)
+      });
     },
+
     onEachFeature: function(feature, layer) {
       const p = feature.properties;
+
       layer.bindPopup(
         "<b>" + (p.nom || "Observation") + "</b><br>" +
         "Sexe du colibri : " + (p.sexe || "Inconnu") + "<br>" +
