@@ -59,19 +59,15 @@ function lireDate(dateTexte) {
 
   const d = new Date(dateTexte);
 
-  if (!isNaN(d.getTime())) {
-    return d;
-  }
+  if (!isNaN(d.getTime())) return d;
 
   return null;
 }
 
 function formatDate(dateTexte) {
-  if (!dateTexte) return "Non précisée";
+  const d = lireDate(dateTexte);
 
-  const d = new Date(dateTexte);
-
-  if (isNaN(d.getTime())) return "Non précisée";
+  if (!d) return "Non précisée";
 
   return d.toLocaleDateString('fr-CA', {
     day: 'numeric',
@@ -82,7 +78,6 @@ function formatDate(dateTexte) {
 
 function couleurParDate(feature) {
   const dateTexte = feature.properties.maleDate || feature.properties.femelleDate;
-
   const d = lireDate(dateTexte);
 
   if (!d) return "grey";
@@ -105,10 +100,8 @@ function creerIcone(couleur) {
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-" +
       couleur +
       ".png",
-
     shadowUrl:
       "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-
     iconSize: [18, 30],
     iconAnchor: [9, 30],
     popupAnchor: [1, -28],
@@ -116,15 +109,13 @@ function creerIcone(couleur) {
   });
 }
 
-fetch('./projet-colibris-arrivees.geojson')
+fetch('./projet-colibris-arrivees.geojson?v=' + Date.now())
 .then(r => r.json())
 .then(data => {
   L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
-      const couleur = couleurParDate(feature);
-
       return L.marker(latlng, {
-        icon: creerIcone(couleur)
+        icon: creerIcone(couleurParDate(feature))
       });
     },
 
