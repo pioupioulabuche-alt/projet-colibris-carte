@@ -1,1 +1,1 @@
-{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-67.80866885673089,48.63774185661608]},"properties":{"nom":"test2","sexe":"Mâle","date":"2026-10-05T04:00:00.000Z","commentaire":""}}]}
+{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[-67.81414320720513,48.63685664056606]},"properties":{"nom":"test2","ville":"Saint-damase","sexe":"Mâle","date":"2026-10-05T04:00:00.000Z"}}]}
