@@ -7,6 +7,7 @@
 <style>
 body { margin:0; font-family:Arial,sans-serif; }
 #map { height:100vh; width:100%; }
+
 .titre {
   position:absolute;
   z-index:1000;
@@ -56,61 +57,21 @@ L.tileLayer(
 function lireDate(dateTexte) {
   if (!dateTexte) return null;
 
-  if (typeof dateTexte === "number") {
-    return new Date(Math.round((dateTexte - 25569) * 86400 * 1000));
-  }
+  const d = new Date(dateTexte);
 
-  const texte = String(dateTexte).trim();
-
-  const iso = new Date(texte);
-  if (!isNaN(iso)) return iso;
-
-  const match = texte.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
-  if (match) {
-    return new Date(
-      Number(match[3]),
-      Number(match[2]) - 1,
-      Number(match[1])
-    );
-  }
-
-  const mois = {
-    janvier:0,
-    février:1,
-    fevrier:1,
-    mars:2,
-    avril:3,
-    mai:4,
-    juin:5,
-    juillet:6,
-    août:7,
-    aout:7,
-    septembre:8,
-    octobre:9,
-    novembre:10,
-    décembre:11,
-    decembre:11
-  };
-
-  const matchTexte = texte.toLowerCase().match(
-    /^(\d{1,2})\s+([a-zéûôîàèç]+)\s+(\d{4})$/
-  );
-
-  if (matchTexte && mois[matchTexte[2]] !== undefined) {
-    return new Date(
-      Number(matchTexte[3]),
-      mois[matchTexte[2]],
-      Number(matchTexte[1])
-    );
+  if (!isNaN(d.getTime())) {
+    return d;
   }
 
   return null;
 }
 
 function formatDate(dateTexte) {
-  const d = lireDate(dateTexte);
+  if (!dateTexte) return "Non précisée";
 
-  if (!d) return "Non précisée";
+  const d = new Date(dateTexte);
+
+  if (isNaN(d.getTime())) return "Non précisée";
 
   return d.toLocaleDateString('fr-CA', {
     day: 'numeric',
@@ -119,7 +80,9 @@ function formatDate(dateTexte) {
   });
 }
 
-function couleurParDate(dateTexte) {
+function couleurParDate(feature) {
+  const dateTexte = feature.properties.maleDate || feature.properties.femelleDate;
+
   const d = lireDate(dateTexte);
 
   if (!d) return "grey";
@@ -158,7 +121,7 @@ fetch('./projet-colibris-arrivees.geojson')
 .then(data => {
   L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
-      const couleur = couleurParDate(feature.properties.date);
+      const couleur = couleurParDate(feature);
 
       return L.marker(latlng, {
         icon: creerIcone(couleur)
@@ -170,9 +133,9 @@ fetch('./projet-colibris-arrivees.geojson')
 
       layer.bindPopup(
         "<b>" + (p.nom || "Observation") + "</b><br>" +
-        "Sexe du colibri : " + (p.sexe || "Inconnu") + "<br>" +
-        "Date d’arrivée : " + formatDate(p.date) + "<br>" +
-        (p.commentaire || "")
+        "Ville : " + (p.ville || "Non précisée") + "<br>" +
+        "Date mâle : " + formatDate(p.maleDate) + "<br>" +
+        "Date femelle : " + formatDate(p.femelleDate)
       );
     }
   }).addTo(map);
