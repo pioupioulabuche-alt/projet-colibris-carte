@@ -114,7 +114,7 @@ function creerIcone(couleur) {
   });
 }
 
-fetch('./projet-colibris-arrivees.geojson?v=' + Date.now())
+fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMRGxs9UN9VC3TX1nFgQ_WyK2cBSThlg5MTs2IQ/exec?carte=arrivees')
 .then(response => response.json())
 .then(data => {
   L.geoJSON(data, {
