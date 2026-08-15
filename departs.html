@@ -127,7 +127,7 @@ onEachFeature: function(feature, layer) {
   const p = feature.properties;
   layer.bindPopup(
 "<b>" + (p.nom || "Observation") + "</b><br>" +
-(p.ville || "Municipalité non précisée") + "<br>" +
+"Ville / municipalité : " + (p.ville || "Non précisée") + "<br>" +
 "Sexe du colibri : " + (p.sexe || "Inconnu") + "<br>" +
 "Date de départ : " + formatDate(p.date)
   );
