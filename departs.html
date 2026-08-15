@@ -126,9 +126,10 @@ fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMR
 onEachFeature: function(feature, layer) {
   const p = feature.properties;
   layer.bindPopup(
-    "<b>" + (p.nom || "Observation") + "</b><br>" +
-    "Sexe du colibri : " + (p.sexe || "Inconnu") + "<br>" +
-    "Date de départ : " + formatDate(p.date)
+"<b>" + (p.nom || "Observation") + "</b><br>" +
+(p.ville || "Municipalité non précisée") + "<br>" +
+"Sexe du colibri : " + (p.sexe || "Inconnu") + "<br>" +
+"Date de départ : " + formatDate(p.date)
   );
 }
   }).addTo(map);
