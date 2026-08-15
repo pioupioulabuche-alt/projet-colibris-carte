@@ -116,7 +116,9 @@ fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMR
 .then(data => {
   L.geoJSON(data, {
     pointToLayer: function(feature, latlng) {
-      const couleur = couleurParDate(feature.properties.date);
+     const couleur = couleurParDate(
+  feature.properties.maleDate || feature.properties.femelleDate
+);
 
       return L.marker(latlng, {
         icon: creerIcone(couleur)
