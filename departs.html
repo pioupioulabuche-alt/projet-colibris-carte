@@ -129,7 +129,7 @@ onEachFeature: function(feature, layer) {
   const p = feature.properties;
   layer.bindPopup(
     "<b>" + (p.nom || "Observation") + "</b><br>" +
-    "Ville / municipalité : " + (p.ville || "Non précisée") + "<br>" +
+    "Ville : " + (p.ville || "Non précisée") + "<br>" +
     "Date mâle : " + formatDate(p.maleDate) + "<br>" +
     "Date femelle : " + formatDate(p.femelleDate)
   );
