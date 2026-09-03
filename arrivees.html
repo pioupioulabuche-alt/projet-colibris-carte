@@ -81,7 +81,21 @@ function formatDate(dateTexte) {
 }
 
 function couleurParDate(feature) {
-  const d = lireDate(feature.properties.maleDate || feature.properties.femelleDate);
+  const dateMale = feature.properties.maleDate;
+  const dateFemelle = feature.properties.femelleDate;
+
+  let premiereDate = dateMale || dateFemelle || "";
+
+  if (dateMale && dateFemelle) {
+    const male = lireDate(dateMale);
+    const femelle = lireDate(dateFemelle);
+
+    if (male && femelle) {
+      premiereDate = male < femelle ? dateMale : dateFemelle;
+    }
+  }
+
+  const d = lireDate(premiereDate);
 
   if (!d) return "grey";
 
@@ -95,6 +109,7 @@ function couleurParDate(feature) {
   if ((mois === 5 && jour === 31) || (mois === 6 && jour <= 6)) return "blue";
 
   return "violet";
+}
 }
 
 function creerIcone(couleur) {
