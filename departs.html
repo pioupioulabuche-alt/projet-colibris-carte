@@ -122,15 +122,17 @@ fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMR
 .then(r => r.json())
 .then(data => {
   L.geoJSON(data, {
-    pointToLayer: function(feature, latlng) {
-     const couleur = couleurParDate(
-  feature.properties.maleDate || feature.properties.femelleDate
-);
+  pointToLayer: function(feature, latlng) {
+  const dateMale = feature.properties.maleDate;
+  const dateFemelle = feature.properties.femelleDate;
 
-      return L.marker(latlng, {
-        icon: creerIcone(couleur)
-      });
-    },
+  let derniereDate = dateMale || dateFemelle;
+
+  if (dateMale && dateFemelle) {
+    derniereDate = new Date(dateMale) > new Date(dateFemelle)
+      ? dateMale
+      : dateFemelle;
+  }
 
 onEachFeature: function(feature, layer) {
   const p = feature.properties;
