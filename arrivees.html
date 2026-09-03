@@ -113,19 +113,26 @@ function couleurParDate(feature) {
 }
 
 function creerIcone(couleur) {
-  return new L.Icon({
-    iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-" +
-      couleur +
-      ".png",
-
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-
-    iconSize: [18, 30],
-    iconAnchor: [9, 30],
-    popupAnchor: [1, -28],
-    shadowSize: [30, 30]
+  return L.divIcon({
+    className: 'colibri-marker',
+    html: `
+      <div style="
+        width: 20px;
+        height: 20px;
+        background-color: ${couleur};
+        -webkit-mask-image: url('colibri.svg?v=2');
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        -webkit-mask-size: contain;
+        mask-image: url('colibri.svg?v=2');
+        mask-repeat: no-repeat;
+        mask-position: center;
+        mask-size: contain;
+      "></div>
+    `,
+    iconSize: [20, 20],
+    iconAnchor: [10, 20],
+    popupAnchor: [0, -20]
   });
 }
 
