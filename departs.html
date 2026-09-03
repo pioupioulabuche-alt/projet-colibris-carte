@@ -134,6 +134,14 @@ fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMR
       : dateFemelle;
   }
 
+  const couleur = couleurParDate(derniereDate);
+
+  return L.marker(latlng, {
+    icon: creerIcone(couleur)
+  });
+},
+
+onEachFeature: function(feature, layer) {
 onEachFeature: function(feature, layer) {
   const p = feature.properties;
   layer.bindPopup(
