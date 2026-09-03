@@ -110,7 +110,6 @@ function couleurParDate(feature) {
 
   return "violet";
 }
-}
 
 function creerIcone(couleur) {
   return L.divIcon({
@@ -131,8 +130,8 @@ function creerIcone(couleur) {
       "></div>
     `,
     iconSize: [20, 20],
-    iconAnchor: [10, 20],
-    popupAnchor: [0, -20]
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -10]
   });
 }
 
@@ -140,6 +139,7 @@ fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMR
 .then(response => response.json())
 .then(data => {
   L.geoJSON(data, {
+
     pointToLayer: function(feature, latlng) {
       return L.marker(latlng, {
         icon: creerIcone(couleurParDate(feature))
@@ -151,11 +151,12 @@ fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMR
 
       layer.bindPopup(
         "<b>" + (p.nom || "Observation") + "</b><br>" +
-     "Ville : " + (p.ville || "Non précisée") + "<br>" +
+        "Ville : " + (p.ville || "Non précisée") + "<br>" +
         "Date mâle : " + formatDate(p.maleDate) + "<br>" +
         "Date femelle : " + formatDate(p.femelleDate)
       );
     }
+
   }).addTo(map);
 });
 </script>
