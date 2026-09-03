@@ -95,19 +95,26 @@ function couleurParDate(dateTexte) {
 }
 
 function creerIcone(couleur) {
-  return new L.Icon({
-    iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-" +
-      couleur +
-      ".png",
-
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-
-    iconSize: [18, 30],
-    iconAnchor: [9, 30],
-    popupAnchor: [1, -28],
-    shadowSize: [30, 30]
+  return L.divIcon({
+    className: 'colibri-marker',
+    html: `
+      <div style="
+        width: 18px;
+        height: 18px;
+        background-color: ${couleur};
+        -webkit-mask-image: url('colibri.svg');
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        -webkit-mask-size: contain;
+        mask-image: url('colibri.svg');
+        mask-repeat: no-repeat;
+        mask-position: center;
+        mask-size: contain;
+      "></div>
+    `,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+    popupAnchor: [0, -9]
   });
 }
 
