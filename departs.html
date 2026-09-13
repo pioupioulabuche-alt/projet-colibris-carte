@@ -56,13 +56,18 @@ L.tileLayer(
 function lireDate(dateTexte) {
   if (!dateTexte) return null;
 
-  const d = new Date(dateTexte);
+  const parties = String(dateTexte).split("-");
 
-  if (!isNaN(d.getTime())) {
-    return d;
+  if (parties.length === 3) {
+    const annee = Number(parties[0]);
+    const mois = Number(parties[1]) - 1;
+    const jour = Number(parties[2]);
+
+    return new Date(annee, mois, jour);
   }
 
-  return null;
+  const d = new Date(dateTexte);
+  return isNaN(d.getTime()) ? null : d;
 }
 
 function formatDate(dateTexte) {
