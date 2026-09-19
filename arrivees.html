@@ -164,15 +164,6 @@ fetch('https://script.google.com/macros/s/AKfycbwIU1a1NNDzbzrMQdqi3VphC4DrthrCaz
 onEachFeature: function(feature, layer) {
   const p = feature.properties;
 
-    pointToLayer: function(feature, latlng) {
-      return L.marker(latlng, {
-        icon: creerIcone(couleurParDate(feature))
-      });
-    },
-
-onEachFeature: function(feature, layer) {
-  const p = feature.properties;
-
   let contenu =
     "<b>" + (p.nom || "Observation") + "</b><br>" +
     "Ville : " + (p.ville || "Non précisée") + "<br>" +
