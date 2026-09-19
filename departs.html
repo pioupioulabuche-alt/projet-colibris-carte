@@ -84,9 +84,37 @@ function formatDate(dateTexte) {
     year: 'numeric'
   });
 }
-
 function couleurParDate(dateTexte) {
   const d = lireDate(dateTexte);
+
+  if (!d) return "grey";
+
+  const mois = d.getMonth() + 1;
+  const jour = d.getDate();
+
+  if (mois < 8 || (mois === 8 && jour < 15)) return "red";
+  if (mois === 8 && jour <= 21) return "orange";
+  if (mois === 8 && jour <= 28) return "yellow";
+  if ((mois === 8 && jour >= 29) || (mois === 9 && jour <= 4)) return "green";
+  if (mois === 9 && jour <= 11) return "blue";
+  if (mois === 9 && jour <= 18) return "violet";
+  if (mois === 9 && jour <= 25) return "deeppink";
+  if ((mois === 9 && jour >= 26) || (mois === 10 && jour <= 2)) return "brown";
+  if (mois === 10 && jour <= 9) return "teal";
+
+  return "navy";
+}
+
+function creerIcone(couleur) {
+  return L.divIcon({
+    className: 'colibri-marker',
+    html: `
+      <div style="
+        width: 20px;
+        height: 20px;
+        background-color: ${couleur};
+        -webkit-mask-image: url('colibri.svg');
+        -webkit-mask-repeat: no-repeat;
         -webkit-mask-position: center;
         -webkit-mask-size: contain;
         mask-image: url('colibri.svg');
@@ -100,6 +128,7 @@ function couleurParDate(dateTexte) {
     popupAnchor: [0, -20]
   });
 }
+
 fetch('https://script.google.com/macros/s/AKfycbwIU1a1NNDzbzrMQdqi3VphC4DrthrCazj5qfuuksL80CERg5-ZE7i95HiGpNCxtU38hQ/exec')
 .then(r => r.json())
 .then(data => {
