@@ -29,7 +29,10 @@ body { margin:0; font-family:Arial,sans-serif; }
 🟡 22 au 28 août<br>
 🟢 29 août au 4 septembre<br>
 🔵 5 au 11 septembre<br>
-🟣 Après le 11 septembre<br>
+🟣 12 au 18 septembre<br>
+🌸 19 au 25 septembre<br>
+🟤 26 septembre au 2 octobre<br>
+🔷 3 au 9 octobre<br>
 ⚪ Date non reconnue<br><br>
 <a href="index.html">Retour</a>
 </div>
@@ -95,8 +98,12 @@ function couleurParDate(dateTexte) {
   if (mois === 8 && jour <= 28) return "yellow";
   if ((mois === 8 && jour >= 29) || (mois === 9 && jour <= 4)) return "green";
   if (mois === 9 && jour <= 11) return "blue";
+if (mois === 9 && jour <= 18) return "violet";
+if (mois === 9 && jour <= 25) return "deeppink";
+if ((mois === 9 && jour >= 26) || (mois === 10 && jour <= 2)) return "brown";
+if (mois === 10 && jour <= 9) return "teal";
 
-  return "violet";
+return "grey";
 }
 
 function creerIcone(couleur) {
