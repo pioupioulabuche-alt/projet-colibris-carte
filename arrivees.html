@@ -170,7 +170,7 @@ onEachFeature: function(feature, layer) {
     "Date mâle : " + formatDate(p.maleDate) + "<br>" +
     "Date femelle : " + formatDate(p.femelleDate);
 
-  if (p.inconnuDate) {
+if (lireDate(p.inconnuDate)) {
     contenu += "<br>Date sexe inconnu : " + formatDate(p.inconnuDate);
   }
 
