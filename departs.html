@@ -165,7 +165,7 @@ let contenu =
   "Date mâle : " + formatDate(p.maleDate) + "<br>" +
   "Date femelle/jeune : " + formatDate(p.femelleDate);
 
-if (p.inconnuDate) {
+if (lireDate(p.inconnuDate)) {
   contenu += "<br>Date sexe inconnu : " + formatDate(p.inconnuDate);
 }
 
