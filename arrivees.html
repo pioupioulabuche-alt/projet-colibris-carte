@@ -88,8 +88,9 @@ function formatDate(dateTexte) {
 function couleurParDate(feature) {
   const dateMale = feature.properties.maleDate;
   const dateFemelle = feature.properties.femelleDate;
+  const dateInconnu = feature.properties.inconnuDate;
 
-  let premiereDate = dateMale || dateFemelle || "";
+  let premiereDate = dateMale || dateFemelle || dateInconnu || "";
 
   if (dateMale && dateFemelle) {
     const male = lireDate(dateMale);
@@ -97,6 +98,15 @@ function couleurParDate(feature) {
 
     if (male && femelle) {
       premiereDate = male < femelle ? dateMale : dateFemelle;
+    }
+  }
+
+  if (dateInconnu) {
+    const inconnu = lireDate(dateInconnu);
+    const actuelle = lireDate(premiereDate);
+
+    if (inconnu && (!actuelle || inconnu < actuelle)) {
+      premiereDate = dateInconnu;
     }
   }
 
@@ -140,7 +150,7 @@ function creerIcone(couleur) {
   });
 }
 
-fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMRGxs9UN9VC3TX1nFgQ_WyK2cBSThlg5MTs2IQ/exec?carte=arrivees')
+fetch('https://script.google.com/macros/s/AKfycbwIU1a1NNDzbzrMQdqi3VphC4DrthrCazj5qfuuksL80CERg5-ZE7i95HiGpNCxtU38hQ/exec?carte=arrivees')
 .then(response => response.json())
 .then(data => {
   L.geoJSON(data, {
@@ -151,15 +161,29 @@ fetch('https://script.google.com/macros/s/AKfycbwxHN4t-mSmK4KuIjzzE9TRIBNaueFAMR
       });
     },
 
-    onEachFeature: function(feature, layer) {
-      const p = feature.properties;
+onEachFeature: function(feature, layer) {
+  const p = feature.properties;
 
-      layer.bindPopup(
-        "<b>" + (p.nom || "Observation") + "</b><br>" +
-        "Ville : " + (p.ville || "Non précisée") + "<br>" +
-        "Date mâle : " + formatDate(p.maleDate) + "<br>" +
-        "Date femelle : " + formatDate(p.femelleDate)
-      );
+    pointToLayer: function(feature, latlng) {
+      return L.marker(latlng, {
+        icon: creerIcone(couleurParDate(feature))
+      });
+    },
+
+onEachFeature: function(feature, layer) {
+  const p = feature.properties;
+
+  let contenu =
+    "<b>" + (p.nom || "Observation") + "</b><br>" +
+    "Ville : " + (p.ville || "Non précisée") + "<br>" +
+    "Date mâle : " + formatDate(p.maleDate) + "<br>" +
+    "Date femelle : " + formatDate(p.femelleDate);
+
+  if (p.inconnuDate) {
+    contenu += "<br>Date sexe inconnu : " + formatDate(p.inconnuDate);
+  }
+
+layer.bindPopup(contenu);
     }
 
   }).addTo(map);
