@@ -29,14 +29,14 @@ body { margin:0; font-family:Arial,sans-serif; }
 🟡 22 au 28 août<br>
 🟢 29 août au 4 septembre<br>
 🔵 5 au 11 septembre<br>
-🟣 12 au 18 septembre<br>
-🌸 19 au 25 septembre<br>
-🟤 26 septembre au 2 octobre<br>
-🔷 3 au 9 octobre<br>
-⚪ Date non reconnue<br><br>
+<span style="color: violet;">●</span> 12 au 18 septembre<br>
+<span style="color: deeppink;">●</span> 19 au 25 septembre<br>
+<span style="color: brown;">●</span> 26 septembre au 2 octobre<br>
+<span style="color: teal;">●</span> 3 au 9 octobre<br>
+<span style="color: navy;">●</span> Après le 9 octobre<br>
+<span style="color: grey;">●</span> Date non reconnue<br>
 <a href="index.html">Retour</a>
 </div>
-
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -87,35 +87,6 @@ function formatDate(dateTexte) {
 
 function couleurParDate(dateTexte) {
   const d = lireDate(dateTexte);
-
-  if (!d) return "grey";
-
-  const mois = d.getMonth() + 1;
-  const jour = d.getDate();
-
-  if (mois < 8 || (mois === 8 && jour < 15)) return "red";
-  if (mois === 8 && jour <= 21) return "orange";
-  if (mois === 8 && jour <= 28) return "yellow";
-  if ((mois === 8 && jour >= 29) || (mois === 9 && jour <= 4)) return "green";
-  if (mois === 9 && jour <= 11) return "blue";
-if (mois === 9 && jour <= 18) return "violet";
-if (mois === 9 && jour <= 25) return "deeppink";
-if ((mois === 9 && jour >= 26) || (mois === 10 && jour <= 2)) return "brown";
-if (mois === 10 && jour <= 9) return "teal";
-
-return "grey";
-}
-
-function creerIcone(couleur) {
-  return L.divIcon({
-    className: 'colibri-marker',
-    html: `
-      <div style="
-        width: 20px;
-        height: 20px;
-        background-color: ${couleur};
-        -webkit-mask-image: url('colibri.svg');
-        -webkit-mask-repeat: no-repeat;
         -webkit-mask-position: center;
         -webkit-mask-size: contain;
         mask-image: url('colibri.svg');
