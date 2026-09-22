@@ -134,6 +134,15 @@ fetch('https://script.google.com/macros/s/AKfycbwIU1a1NNDzbzrMQdqi3VphC4DrthrCaz
 .then(r => r.json())
 .then(data => {
   L.geoJSON(data, {
+    filter: function(feature) {
+  const p = feature.properties || {};
+
+  return !!(
+    lireDate(p.maleDate) ||
+    lireDate(p.femelleDate) ||
+    lireDate(p.inconnuDate)
+  );
+},
   pointToLayer: function(feature, latlng) {
   const dateMale = feature.properties.maleDate;
   const dateFemelle = feature.properties.femelleDate;
