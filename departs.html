@@ -130,7 +130,10 @@ function creerIcone(couleur) {
   });
 }
 
-fetch('https://script.google.com/macros/s/AKfycbwIU1a1NNDzbzrMQdqi3VphC4DrthrCazj5qfuuksL80CERg5-ZE7i95HiGpNCxtU38hQ/exec')
+fetch(
+  'https://script.google.com/macros/s/AKfycbwIU1a1NNDzbzrMQdqi3VphC4DrthrCazj5qfuuksL80CERg5-ZE7i95HiGpNCxtU38hQ/exec?carte=departs&t=' + Date.now(),
+  { cache: 'no-store' }
+)
 .then(r => r.json())
 .then(data => {
   L.geoJSON(data, {
