@@ -136,14 +136,6 @@ fetch(
 )
 .then(r => r.json())
 .then(data => {
- const nbAvecDate = data.features.filter(feature => {
-  const p = feature.properties || {};
-  return lireDate(p.maleDate) ||
-         lireDate(p.femelleDate) ||
-         lireDate(p.inconnuDate);
-}).length;
-
-alert("Total : " + data.features.length + " | Avec date : " + nbAvecDate);
   L.geoJSON(data, {
     filter: function(feature) {
   const p = feature.properties || {};
