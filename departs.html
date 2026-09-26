@@ -181,11 +181,13 @@ if (lireDate(p.inconnuDate)) {
   contenu += "<br>Date sexe inconnu : " + formatDate(p.inconnuDate);
 }
 
-layer.bindPopup(contenu);
+ layer.bindPopup(contenu);
 }
   }).addTo(map);
+})
+.catch(erreur => {
+  alert("Erreur carte : " + erreur.message);
 });
 </script>
-
 </body>
 </html>
